@@ -39,31 +39,13 @@ class RegisterController: NSObject, ASAuthorizationControllerDelegate, ASAuthori
             )
             completion?(.success(response))
             break
-        case let securityKeyRegistration as ASAuthorizationSecurityKeyPublicKeyCredentialRegistration:
-            var transportStrings: [String] = []
-            
-            if #available(iOS 17.5, *) {
-                for transport in securityKeyRegistration.transports {
-                    switch transport {
-                    case .usb:
-                        transportStrings.append("usb")
-                    case .nfc:
-                        transportStrings.append("nfc")
-                    case .bluetooth:
-                        transportStrings.append("bluetooth")
-                    default:
-                        transportStrings.append("unknown")
-                    }
-                }
-            }
-
-                
+        case let securityKeyRegistration as ASAuthorizationSecurityKeyPublicKeyCredentialRegistration: 
             let response = RegisterResponse(
                 id: securityKeyRegistration.credentialID.toBase64URL(),
                 rawId: securityKeyRegistration.credentialID.toBase64URL(),
                 clientDataJSON: securityKeyRegistration.rawClientDataJSON.toBase64URL(),
                 attestationObject: securityKeyRegistration.rawAttestationObject!.toBase64URL(),
-                transports: transportStrings
+                transports: []
             )
             completion?(.success(response))
             break
